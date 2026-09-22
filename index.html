@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HVAC servis</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Inter', 'sans-serif'] },
+                    colors: {
+                        glass: 'rgba(15, 23, 42, 0.75)',
+                        glassBorder: 'rgba(255, 255, 255, 0.1)',
+                        brandText: '#38bdf8' // sky-400
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        body {
+            /* Тематический фон: HVAC-специалист с градиентом для читаемости текста */
+            background: linear-gradient(135deg, rgba(15, 23, 42, 0.85) 0%, rgba(15, 23, 42, 0.6) 100%), 
+                        url('https://images.unsplash.com/photo-1621905252507-b35492cc74b4?q=80&w=2069&auto=format&fit=crop') center/cover fixed no-repeat;
+            min-height: 100vh;
+            color: #f8fafc;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+        }
+        
+        .glass-panel {
+            background: var(--glass);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--glassBorder);
+            box-shadow: 0 30px 60px -15px rgba(0, 0, 0, 0.7);
+            max-height: 96vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .scrollable-content {
+            overflow-y: auto;
+            scrollbar-width: thin;
+            scrollbar-color: rgba(56, 189, 248, 0.5) transparent;
+        }
+        
+        .scrollable-content::-webkit-scrollbar {
+            width: 6px;
+        }
+        .scrollable-content::-webkit-scrollbar-thumb {
+            background-color: rgba(56, 189, 248, 0.5);
+            border-radius: 10px;
+        }
+
+        .tab-btn {
+            transition: all 0.3s ease;
+        }
+        .tab-btn.active {
+            background: rgba(56, 189, 248, 0.15);
+            border-color: rgba(56, 189, 248, 0.3);
+            color: #fff;
+        }
+        .tab-btn.inactive {
+            background: transparent;
+            border-color: transparent;
+            color: #94a3b8;
+        }
+        .tab-btn.inactive:hover {
+            color: #e2e8f0;
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .price-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            padding-bottom: 0.35rem;
+            margin-bottom: 0.75rem;
+            border-bottom: 1px dotted rgba(255, 255, 255, 0.15);
+        }
+        .price-name {
+            font-size: 0.85rem;
+            line-height: 1.25;
+            color: #cbd5e1;
+            padding-right: 1rem;
+        }
+        .price-val {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--brandText);
+            white-space: nowrap;
+        }
+    </style>
+</head>
+<body class="font-sans antialiased">
+
+    <div class="glass-panel w-full max-w-6xl rounded-2xl overflow-hidden">
+        
+        <header class="border-b border-white/10 px-6 py-4 flex flex-col md:flex-row justify-between items-center gap-4 shrink-0 bg-slate-900/40">
+            <div class="flex items-center gap-3">
+                <i class="fa-solid fa-fan text-2xl text-sky-400"></i>
+                <h1 class="text-xl md:text-2xl font-bold tracking-widest uppercase">HVAC servis</h1>
+            </div>
+
+            <div class="flex flex-wrap justify-center items-center gap-x-5 gap-y-2 text-sm text-slate-300">
+                <a href="tel:+998998529380" class="flex items-center gap-2 hover:text-white transition-colors">
+                    <i class="fa-solid fa-phone text-sky-400/80"></i> +998 99 852 93 80
+                </a>
+                
+                <div class="flex items-center gap-1.5">
+                    <a href="mailto:kutdus2020@gmail.com" class="flex items-center gap-2 hover:text-white transition-colors">
+                        <i class="fa-regular fa-envelope text-sky-400/80"></i> kutdus2020@gmail.com
+                    </a>
+                    <a href="https://t.me/kutdus28" target="_blank" title="Telegram" class="text-sky-400 hover:text-sky-300 transition-transform hover:scale-110 ml-1">
+                        <i class="fa-brands fa-telegram text-lg"></i>
+                    </a>
+                </div>
+
+                <span class="flex items-center gap-2">
+                    <i class="fa-solid fa-location-dot text-sky-400/80"></i> Ташкент
+                </span>
+            </div>
+        </header>
+
+        <div class="px-6 pt-5 shrink-0">
+            <div class="flex flex-row gap-2 bg-slate-900/50 p-1.5 rounded-xl border border-white/5">
+                <button onclick="switchTab('ac')" id="tab-btn-ac" class="tab-btn active flex-1 py-2.5 px-4 rounded-lg font-medium text-sm md:text-base border transition-all">
+                    <i class="fa-regular fa-snowflake mr-2 opacity-80"></i> Кондиционирование / Konditsioner
+                </button>
+                <button onclick="switchTab('vent')" id="tab-btn-vent" class="tab-btn inactive flex-1 py-2.5 px-4 rounded-lg font-medium text-sm md:text-base border transition-all">
+                    <i class="fa-solid fa-wind mr-2 opacity-80"></i> Вентиляция / Ventilyatsiya
+                </button>
+            </div>
+        </div>
+
+        <main class="scrollable-content flex-grow p-6">
+            
+            <!-- Вкладка Кондиционирование -->
+            <div id="tab-content-ac" class="block animate-fade-in">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-x-12 gap-y-2">
+                    <!-- Колонка 1 -->
+                    <div>
+                        <div class="price-row">
+                            <span class="price-name">Стандартный монтаж / Standart o'rnatish 07/09/12 <br><span class="text-xs text-slate-400">(до 35 м² / 35 m² gacha)</span></span>
+                            <span class="price-val">450 000 - 600 000 сум</span>
+                        </div>
+                        <div class="price-row">
+                            <span class="price-name">Стандартный монтаж / Standart o'rnatish 18 <br><span class="text-xs text-slate-400">(до 50 м² / 50 m² gacha)</span></span>
+                            <span class="price-val">550 000 - 700 000 сум</span>
+                        </div>
+                        <div class="price-row">
+                            <span class="price-name">Стандартный монтаж / Standart o'rnatish 24 <br><span class="text-xs text-slate-400">(до 70 м² / 70 m² gacha)</span></span>
+                            <span class="price-val">600 000 - 850 000 сум</span>
+                        </div>
+                        <div class="price-row">
+                            <span class="price-name">Колонные и кассетные блоки / <br>Ustunli va kassetali bloklar</span>
+                            <span class="price-val">от 800 000 - 1 300 000 сум</span>
+                        </div>
+                        <div class="price-row">
+                            <span class="price-name">Доп. трасса (за метр) / <br>Qo'shimcha trassa (metr uchun)</span>
+                            <span class="price-val">80 000 - 120 000 сум</span>
+                        </div>
+                        <div class="price-row">
+                            <span class="price-name">Штробление (за метр) / <br>Shtrob qilish (metr uchun)</span>
+                            <span class="price-val">60 000 - 150 000 сум</span>
+                        </div>
+                    </div>
+                    <!-- Колонка 2 -->
+                    <div>
+                        <div class="price-row">
+                            <span class="price-name">Демонтаж / Demontaj qilish</span>
+                            <span class="price-val">200 000 - 250 000 сум</span>
+                        </div>
+                        <div class="price-row">
+                            <span class="price-name">Автовышка / Альпинист / <br>Avtovishka / Alpinist</span>
+                            <span class="price-val">от 400 000 сум</span>
+                        </div>
+                        <div class="price-row">
+                            <span class="price-name">Стандартная чистка / Standart yuvish</span>
+                            <span class="price-val">180 000 - 300 000 сум</span>
+                        </div>
+                        <div class="price-row">
+                            <span class="price-name">Комплекс + Фреон (до 200г) / <br>Majmuaviy servis + Freon (200g gacha)</span>
+                            <span class="price-val">250 000 - 450 000 сум</span>
+                        </div>
+                        <div class="price-row">
+                            <span class="price-name">Глубокая чистка (разборка) / <br>Chuqur tozalash (qismlarga ajratish)</span>
+                            <span class="price-val">от 350 000 сум</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Вкладка Вентиляция -->
+            <div id="tab-content-vent" class="hidden animate-fade-in">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-x-12 gap-y-2">
+                    <!-- Колонка 1 -->
+                    <div>
+                        <div class="price-row">
+                            <span class="price-name">Очистка вытяжных моторов / <br>Chiqarish motorlarini tozalash</span>
+                            <span class="price-val">400 000 - 900 000 сум</span>
+                        </div>
+                        <div class="price-row">
+                            <span class="price-name">Очистка воздуховодов / <br>Havo o'tkazgichlarni tozalash</span>
+                            <span class="price-val">60 000 - 150 000 сум</span>
+                        </div>
+                        <div class="price-row">
+                            <span class="price-name">Очистка зонтов / Zontlarni tozalash</span>
+                            <span class="price-val">150 000 - 350 000 сум</span>
+                        </div>
+                        <div class="price-row">
+                            <span class="price-name">Очистка жироуловителей / <br>Yog' tutqichlarni tozalash</span>
+                            <span class="price-val">30 000 - 70 000 сум</span>
+                        </div>
+                        <div class="price-row">
+                            <span class="price-name">Обслуживание и мойка гидрофильтров / <br>Gidrofiltrlarga xizmat ko'rsatish va yuvish</span>
+                            <span class="price-val">600 000 - 1 500 000 сум</span>
+                        </div>
+                    </div>
+                    <!-- Колонка 2 -->
+                    <div>
+                        <div class="price-row">
+                            <span class="price-name">Очистка электростатических фильтров / <br>Elektrostatik filtrlarni tozalash</span>
+                            <span class="price-val">200 000 - 500 000 сум</span>
+                        </div>
+                        <div class="price-row">
+                            <span class="price-name">Монтаж (за кв. м) / <br>O'rnatish (kv. m uchun)</span>
+                            <span class="price-val">100 000 сум</span>
+                        </div>
+                        <div class="price-row">
+                            <span class="price-name">Изготовление 0.5 мм / <br>Tayyorlash 0.5 mm</span>
+                            <span class="price-val">125 000 сум</span>
+                        </div>
+                        <div class="price-row">
+                            <span class="price-name">Изготовление 0.7 мм / <br>Tayyorlash 0.7 mm</span>
+                            <span class="price-val">145 000 сум</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <script>
+        function switchTab(tabId) {
+            const btnAc = document.getElementById('tab-btn-ac');
+            const btnVent = document.getElementById('tab-btn-vent');
+            const contentAc = document.getElementById('tab-content-ac');
+            const contentVent = document.getElementById('tab-content-vent');
+
+            const baseClass = 'tab-btn flex-1 py-2.5 px-4 rounded-lg font-medium text-sm md:text-base border transition-all';
+            
+            // Сброс всех классов
+            btnAc.className = baseClass + ' inactive';
+            btnVent.className = baseClass + ' inactive';
+            
+            contentAc.classList.add('hidden');
+            contentAc.classList.remove('block');
+            contentVent.classList.add('hidden');
+            contentVent.classList.remove('block');
+
+            // Активация нужной вкладки
+            if(tabId === 'ac') {
+                btnAc.className = baseClass + ' active';
+                contentAc.classList.remove('hidden');
+                contentAc.classList.add('block');
+            } else if (tabId === 'vent') {
+                btnVent.className = baseClass + ' active';
+                contentVent.classList.remove('hidden');
+                contentVent.classList.add('block');
+            }
+        }
+    </script>
+</body>
+</html>
